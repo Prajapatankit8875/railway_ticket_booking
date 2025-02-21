@@ -1,0 +1,15 @@
+<h2>Ticket Report</h2>
+<table>
+    <tr>
+        <th>Passenger</th>
+        <th>Train</th>
+        <th>Price</th>
+    </tr>
+    {% for ticket in tickets %}
+    <tr>
+        <td>{{ ticket.passenger.name }}</td>
+        <td>{{ ticket.train.train_name }}</td>
+        <td>{{ ticket.tariff.price }}</td>
+    </tr>
+    {% endfor %}
+</table>

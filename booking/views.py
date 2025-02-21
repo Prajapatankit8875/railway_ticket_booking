@@ -1,9 +1,26 @@
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from .models import Passenger, Train, Tariff, Ticket
 from .forms import PassengerForm, TrainForm, TariffForm, TicketForm
 
 def dashboard(request):
     return render(request, 'booking/dashboard.html')
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('dashboard')
+    else:
+        form = UserCreationForm()
+    return render(request, 'booking/register.html', {'form': form})
+
+def generate_report(request):
+    tickets = Ticket.objects.all()
+    return render(request, 'booking/report.html', {'tickets': tickets})
 
 def add_passenger(request):
     if request.method == 'POST':
@@ -60,3 +77,11 @@ def book_ticket(request):
 def view_tickets(request):
     tickets = Ticket.objects.all()
     return render(request, 'booking/view_tickets.html', {'tickets': tickets})
+
+
+def cancel_ticket(request, ticket_id):
+    ticket = Ticket.objects.get(id=ticket_id)
+    if request.method == 'POST':
+        ticket.delete()
+        return redirect('view_tickets')
+    return render(request, 'booking/cancel_ticket.html', {'ticket': ticket})

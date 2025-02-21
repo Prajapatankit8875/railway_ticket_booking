@@ -1,0 +1,7 @@
+<h2>Cancel Ticket</h2>
+<p>Are you sure you want to cancel the ticket for {{ ticket.passenger.name }} on {{ ticket.train.train_name }}?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, Cancel</button>
+</form>
+<a href="{% url 'view_tickets' %}">No, Go Back</a>
